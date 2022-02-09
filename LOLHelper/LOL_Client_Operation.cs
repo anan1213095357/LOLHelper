@@ -91,17 +91,20 @@ namespace LOLHelper
                     Console.WriteLine("点击接受对局");
                     await Task.Delay(1000);
 
-                    //等待所有人接受对局方法
+                    //等待所有人接受对局方法（一直找接受对局原型标志，找不到则判断是否进入对局或者是未接收对局）
                     while (op_Client.FindMultiColor(522, 265, 552, 290,
                         "00537b-000000|c3983c-000000|c69f4b-000000",
-                        "00537b,1|16|c3983c,12|8|c69f4b", 1, 0, out object x, out object y) == 1)
+                        "00537b,1|16|c3983c,12|8|c69f4b", 0.9, 0, out object x, out object y) == 1)
+                    {
+                        Console.WriteLine("一直找接受对局原型标志，找不到则判断是否进入对局或者是未接收对局");
                         await Task.Delay(300);
+
+                    }
 
                     //如果返回大厅
                     if (op_Client.FindMultiColor(761, 34, 778, 51,
                         "010f1d-000000|0ac9e4-000000|0ac5e0-000000",
-                        "010f1d,3|3|0ac9e4,4|10|0ac5e0", 1, 0, out object x1, out object y1) == 1)
-
+                        "010f1d,3|3|0ac9e4,4|10|0ac5e0", 0.9, 0, out object x1, out object y1) == 1)
                         await LoLAuto.FireAsync(ClientTrigger.BP结束);
                     else
                         await LoLAuto.FireAsync(ClientTrigger.表明英雄);
@@ -159,7 +162,7 @@ namespace LOLHelper
                     Console.WriteLine("当前楼层" + severalLayers);
                     #endregion
                     await ExpressHeroesAsync();
-                    await Task.Delay(3000);
+                    await Task.Delay(7000);
                     await LoLAuto.FireAsync(ClientTrigger.选择英雄);
 
 
@@ -209,15 +212,39 @@ namespace LOLHelper
             {
                 await Task.Factory.StartNew(async () =>
                 {
+                    await Task.Delay(8000);
                     Console.WriteLine("选择英雄");
 
-                    var ret = await op_Client.LoopFindStrAsync(op_Client_Operation, 249, 1, 743, 93, 1, "选择英雄", "E9DFCC-202020", 60, false);
-                    if (!ret.Result)
-                        await LoLAuto.FireAsync(ClientTrigger.BP结束);
+
+                    #region 判断是否进入选择英雄或者是离开BP界面
+                    var findCount = 0;
+                    while (true)
+                    {
+                        //如果进入选择英雄 则开始选择英雄
+                        op_Client.UseDict(1);
+                        if (op_Client.FindStr(249, 1, 743, 93, "选择英雄", "E9DFCC-202020", 0.85, out object retx, out object rety) == 0)
+                            break;
+
+                        //如果返回大厅
+                        if (op_Client.FindMultiColor(761, 34, 778, 51,
+                            "010f1d-000000|0ac9e4-000000|0ac5e0-000000",
+                            "010f1d,3|3|0ac9e4,4|10|0ac5e0", 1, 0, out object x1, out object y1) == 1)
+                        {
+                            await LoLAuto.FireAsync(ClientTrigger.BP结束);
+                            return;
+                        }
+
+                        //如果超时也BP结束
+                        if (findCount++ > 1200)
+                        {
+                            await LoLAuto.FireAsync(ClientTrigger.BP结束);
+                            return;
+                        }
+                        await Task.Delay(100);
+                    }
+                    #endregion
 
 
-
-                    await Task.Delay(1000);
                     if (await ChooseHeroesAsync())
                         await LoLAuto.FireAsync(ClientTrigger.选择英雄);
                     else
@@ -279,8 +306,8 @@ namespace LOLHelper
                 new Rectangle(1,  74, 7, 143),//一楼
                 new Rectangle(1, 141, 7, 203),//二楼
                 new Rectangle(1, 211, 7, 263),//二楼
-                new Rectangle(1, 342, 7, 328),//四楼
-                new Rectangle(1, 412, 7, 398),//五楼
+                new Rectangle(1, 266, 7, 328),//四楼
+                new Rectangle(1, 331, 7, 398),//五楼
             };
 
             var currRectangle = poss.FirstOrDefault(p =>
