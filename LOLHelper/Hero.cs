@@ -18,7 +18,6 @@ namespace LOLHelper
     public class Hero
     {
         public string Name { get; set; }
-        public Talent Talent { get; set; }
         public int Order { get; set; }
         public Position Position { get; set; }
         public bool Available { get; set; } = true;

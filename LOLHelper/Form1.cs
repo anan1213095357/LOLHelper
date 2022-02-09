@@ -40,32 +40,11 @@ namespace LOLHelper
             int hwndThree = Op_Global.FindWindowEx(hwndTow, "Chrome_WidgetWin_0", "");
             op_Client_Operation.BindWindow(hwndThree, "normal", "windows", "windows", 0);
 
-            lOL_Client_Operation = new LOL_Client_Operation(op_Client, op_Client_Operation, new HeroesOptions
-            {
-                FavoriteList = new List<Hero>()
-                {
-                    new Hero { Name = "雪原双子", Order = 99 ,Position = Position.打野},
-                    new Hero { Name = "远古巫灵", Order = 99 ,Position = Position.辅助},
-                    new Hero { Name = "远古巫灵", Order = 99 ,Position = Position.辅助},
-                    new Hero { Name = "远古巫灵", Order = 99 ,Position = Position.中单},
-                    new Hero { Name = "发条魔灵", Order = 98 ,Position = Position.辅助},
-                    new Hero { Name = "复仇烈焰", Order = 97 ,Position = Position.辅助},
-                    new Hero { Name = "复仇烈焰", Order = 97 ,Position = Position.中单},
-                },
-                HateList = new List<Hero>()
-                {
-                    new Hero { Name = "无极剑圣", Order = 99 },
-                    new Hero { Name = "永恒梦魇", Order = 98 },
-                    new Hero { Name = "虚空掠夺者", Order = 97 },
-                    new Hero { Name = "无双剑姬", Order = 96 },
-                    new Hero { Name = "破败之王", Order = 95 },
-                    new Hero { Name = "疾风剑豪", Order = 94 },
-                }
-            });
+            lOL_Client_Operation = new LOL_Client_Operation(op_Client, op_Client_Operation);
 
             op_Client.SetDict(0, Environment.CurrentDirectory + "\\lol.dict");
             op_Client.SetDict(1, Environment.CurrentDirectory + "\\lolclientstatus.dict");
-            
+
 
         }
 
@@ -77,33 +56,116 @@ namespace LOLHelper
         private async void Form1_Load(object sender, EventArgs e)
         {
             dataGridView1.DataSource = Fsql.Select<HerosModel>().ToList();
-            var r = await Fsql.Insert(new HerosModel
-            {
-                Available = false,
-                Name = "远古巫灵",
-                Order = 99,
-                Position = Position.辅助,
-                Skills = new SkillModel[] {
-                    new SkillModel
-                    {
-                        Skill_D = SkillEnum.闪现,
-                        Skill_F = SkillEnum.引燃
-                    },
-                    new SkillModel
-                    {
-                        Skill_D = SkillEnum.闪现,
-                        Skill_F = SkillEnum.屏障
-                    }
-                }
-            }).ExecuteAffrowsAsync();
+            #region 插入测试数据
+            //await Fsql.Insert(new HerosModel
+            //{
+            //    Available = false,
+            //    Name = "沙漠死神",
+            //    Order = 100,
+            //    Position = Position.上单,
+            //}).ExecuteAffrowsAsync();
 
-            Console.WriteLine(r);
+            //await Fsql.Insert(new HerosModel
+            //{
+            //    Available = false,
+            //    Name = "牧魂人",
+            //    Order = 100,
+            //    Position = Position.上单,
+            //}).ExecuteAffrowsAsync();
 
+            //await Fsql.Insert(new HerosModel
+            //{
+            //    Available = false,
+            //    Name = "雪原双子",
+            //    Order = 99,
+            //    Position = Position.打野,
+            //}).ExecuteAffrowsAsync();
+            //await Fsql.Insert(new HerosModel
+            //{
+            //    Available = false,
+            //    Name = "盲僧",
+            //    Order = 99,
+            //    Position = Position.打野,
+            //}).ExecuteAffrowsAsync();
+            //await Fsql.Insert(new HerosModel
+            //{
+            //    Available = false,
+            //    Name = "战争之影",
+            //    Order = 98,
+            //    Position = Position.打野,
+            //}).ExecuteAffrowsAsync();
+
+
+            //await Fsql.Insert(new HerosModel
+            //{
+            //    Available = false,
+            //    Name = "远古巫灵",
+            //    Order = 99,
+            //    Position = Position.中单,
+
+            //}).ExecuteAffrowsAsync();
+
+            //await Fsql.Insert(new HerosModel
+            //{
+            //    Available = false,
+            //    Name = "光辉女郎",
+            //    Order = 100,
+            //    Position = Position.中单,
+            //}).ExecuteAffrowsAsync();
+
+
+            //await Fsql.Insert(new HerosModel
+            //{
+            //    Available = false,
+            //    Name = "寒冰射手",
+            //    Order = 100,
+            //    Position = Position.射手,
+            //}).ExecuteAffrowsAsync();
+
+            //await Fsql.Insert(new HerosModel
+            //{
+            //    Available = false,
+            //    Name = "赏金猎人",
+            //    Order = 100,
+            //    Position = Position.射手,
+            //}).ExecuteAffrowsAsync();
+
+            //await Fsql.Insert(new HerosModel
+            //{
+            //    Available = false,
+            //    Name = "远古巫灵",
+            //    Order = 99,
+            //    Position = Position.辅助,
+
+            //}).ExecuteAffrowsAsync();
+
+            //await Fsql.Insert(new HerosModel
+            //{
+            //    Available = false,
+            //    Name = "光辉女郎",
+            //    Order = 100,
+            //    Position = Position.辅助,
+            //}).ExecuteAffrowsAsync();
+
+            //await Fsql.Insert(new HerosModel
+            //{
+            //    Available = false,
+            //    Name = "迅捷斥候",
+            //    Order = 100,
+            //    Position = Position.辅助,
+            //}).ExecuteAffrowsAsync();
+
+            //await Fsql.Insert(new HerosModel
+            //{
+            //    Available = false,
+            //    Name = "机械先驱",
+            //    Order = 100,
+            //    Position = Position.辅助,
+            //}).ExecuteAffrowsAsync();
+
+            #endregion
             await lOL_Client_Operation.GameAsync();
         }
 
-        private async void button1_Click(object sender, EventArgs e)
-        {
-        }
     }
 }

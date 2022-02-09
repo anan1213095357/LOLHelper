@@ -1,4 +1,5 @@
-﻿using opLib;
+﻿using LOLHelper.Models;
+using opLib;
 using Stateless;
 using System;
 using System.Collections.Generic;
@@ -49,20 +50,17 @@ namespace LOLHelper
         public StateMachine<ClientStatus, ClientTrigger> LoLAuto;
         private readonly IOpInterface op_Client;
         private readonly IOpInterface op_Client_Operation;
-        private readonly HeroesOptions heroesOptions;
 
         private Position position;
+        private int severalLayers;
 
         public LOL_Client_Operation(
             IOpInterface Op_Client,
-            IOpInterface Op_Client_Operation,
-            HeroesOptions heroesOptions
-
+            IOpInterface Op_Client_Operation
             )
         {
             op_Client = Op_Client;
             op_Client_Operation = Op_Client_Operation;
-            this.heroesOptions = heroesOptions;
             LoLAuto = new StateMachine<ClientStatus, ClientTrigger>(ClientStatus.启动客户端);
 
 
@@ -156,6 +154,10 @@ namespace LOLHelper
                     }
                     #endregion
 
+                    #region 判断楼层
+                    severalLayers = SeveralLayersOfJudgment();
+                    Console.WriteLine("当前楼层" + severalLayers);
+                    #endregion
                     await ExpressHeroesAsync();
                     await Task.Delay(3000);
                     await LoLAuto.FireAsync(ClientTrigger.选择英雄);
@@ -274,8 +276,11 @@ namespace LOLHelper
         private int SeveralLayersOfJudgment()
         {
             Rectangle[] poss = new Rectangle[] {
+                new Rectangle(1,  74, 7, 143),//一楼
                 new Rectangle(1, 141, 7, 203),//二楼
-                new Rectangle(0, 342, 8, 386),//四楼
+                new Rectangle(1, 211, 7, 263),//二楼
+                new Rectangle(1, 342, 7, 328),//四楼
+                new Rectangle(1, 412, 7, 398),//五楼
             };
 
             var currRectangle = poss.FirstOrDefault(p =>
@@ -286,14 +291,16 @@ namespace LOLHelper
 
             switch (currRectangle)
             {
-                case Rectangle r when r.X > 0:
+                case Rectangle r when r.Y > 70:
                     return 1;
-                case Rectangle r when r.X > 0:
+                case Rectangle r when r.Y > 140:
                     return 2;
-                case Rectangle r when r.X > 0:
+                case Rectangle r when r.Y > 210:
                     return 3;
-                case Rectangle r when r.X > 0:
+                case Rectangle r when r.Y > 340:
                     return 4;
+                case Rectangle r when r.Y > 410:
+                    return 5;
             }
             return 0;
         }
@@ -313,7 +320,7 @@ namespace LOLHelper
                 int hwndTow = Form1.Op_Global.FindWindowEx(hwndOne, "CefBrowserWindow", "");
                 int hwndThree = Form1.Op_Global.FindWindowEx(hwndTow, "Chrome_WidgetWin_0", "");
 
-                var hero = heroesOptions.FavoriteList.Where(p => p.Available && p.Position == position).OrderByDescending(p => p.Order).FirstOrDefault();
+                var hero = await Form1.Fsql.Select<HerosModel>().Where(p => p.Available && p.Position == position).OrderByDescending(p => p.Order).FirstAsync();
 
                 Encoding.Unicode.GetChars(Encoding.Unicode.GetBytes(hero.Name))
                      .Select(p => p).ToList()
@@ -340,7 +347,7 @@ namespace LOLHelper
                 int hwndTow = Form1.Op_Global.FindWindowEx(hwndOne, "CefBrowserWindow", "");
                 int hwndThree = Form1.Op_Global.FindWindowEx(hwndTow, "Chrome_WidgetWin_0", "");
 
-                var hero = heroesOptions.FavoriteList.Where(p => p.Available && p.Position == position).OrderByDescending(p => p.Order).FirstOrDefault();
+                var hero = await Form1.Fsql.Select<HerosModel>().Where(p => p.Available && p.Position == position).OrderByDescending(p => p.Order).FirstAsync();
                 if (hero == null)
                 {
                     return false;
@@ -367,13 +374,13 @@ namespace LOLHelper
                 //如果英雄处于被选或者禁用状态
                 if (!ret.Result)
                 {
-                    heroesOptions.FavoriteList.FirstOrDefault(p => p == hero).Available = false;
+                    await Form1.Fsql.Update<HerosModel>().Where(p => p == hero).Set(p => p.Available, false).ExecuteAffrowsAsync();
                     Console.WriteLine("英雄已被选择，换下个英雄！");
                     return await ChooseHeroesAsync();
                 }
                 else
                 {
-                    heroesOptions.FavoriteList.ForEach(p => p.Available = true);
+                    await Form1.Fsql.Update<HerosModel>().Where(p => !p.Available).Set(p => p.Available, true).ExecuteAffrowsAsync();
                     return true;
                 }
             });
@@ -394,7 +401,7 @@ namespace LOLHelper
                 int hwndTow = Form1.Op_Global.FindWindowEx(hwndOne, "CefBrowserWindow", "");
                 int hwndThree = Form1.Op_Global.FindWindowEx(hwndTow, "Chrome_WidgetWin_0", "");
 
-                var hero = heroesOptions.HateList.Where(p => p.Available).OrderByDescending(p => p.Order).FirstOrDefault();
+                var hero = await Form1.Fsql.Select<HerosModel>().Where(p => p.Available).OrderBy(p => p.Order).FirstAsync();
                 if (hero == null)
                 {
                     return false;
@@ -421,13 +428,12 @@ namespace LOLHelper
                 //如果英雄处于被选或者禁用状态
                 if (!ret.Result)
                 {
-                    heroesOptions.HateList.FirstOrDefault(p => p == hero).Available = false;
+                    await Form1.Fsql.Update<HerosModel>().Where(p => p == hero).Set(p => p.Available, false).ExecuteAffrowsAsync();
                     Console.WriteLine("英雄已被选择，换下个英雄！");
                     return await DisableHeroesAsync();
                 }
                 else
                 {
-                    heroesOptions.HateList.ForEach(p => p.Available = true);
                     return true;
                 }
             });

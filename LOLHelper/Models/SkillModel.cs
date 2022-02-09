@@ -12,6 +12,7 @@ namespace LOLHelper.Models
     {
         [Column(IsIdentity = true, IsPrimary = true)]
         public int ID { get; set; }
+        public long Hero_ID { get; set; }
         public SkillEnum Skill_D { get; set; }
         public SkillEnum Skill_F { get; set; }
 

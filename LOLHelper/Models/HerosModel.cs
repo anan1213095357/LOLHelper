@@ -16,9 +16,7 @@ namespace LOLHelper.Models
         public string Name { get; set; }
         public Position Position { get; set; }
         public int Order { get; set; }
-
-        public virtual ICollection<SkillModel> Skills { get; set; }
-        public bool Available { get; set; }
+        public bool Available { get; set; } = true;
     }
 
     
