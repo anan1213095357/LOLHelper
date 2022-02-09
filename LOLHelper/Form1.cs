@@ -1,13 +1,7 @@
-﻿using opLib;
+﻿using LOLHelper.Models;
+using opLib;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static LOLHelper.LOL_Client_Operation;
 
@@ -64,18 +58,46 @@ namespace LOLHelper
 
             op_Client.SetDict(0, Environment.CurrentDirectory + "\\lol.dict");
             op_Client.SetDict(1, Environment.CurrentDirectory + "\\lolclientstatus.dict");
-            
+
 
         }
 
+        public static IFreeSql Fsql = new FreeSql.FreeSqlBuilder()
+                .UseConnectionString(FreeSql.DataType.Sqlite, $"Data Source={Environment.CurrentDirectory + "\\Data.db"};")
+                .UseAutoSyncStructure(true)
+                .Build();
+
         private async void Form1_Load(object sender, EventArgs e)
         {
+            dataGridView1.DataSource = Fsql.Select<HerosModel>().ToList();
+            var r = await Fsql.Insert(new HerosModel
+            {
+                Available = false,
+                Name = "远古巫灵",
+                Order = 99,
+                Position = Position.辅助,
+                Skills = new SkillModel[] {
+                    new SkillModel
+                    {
+                        Skill_D = SkillEnum.闪现,
+                        Skill_F = SkillEnum.引燃
+                    },
+                    new SkillModel
+                    {
+                        Skill_D = SkillEnum.闪现,
+                        Skill_F = SkillEnum.屏障
+                    }
+                }
+            }).ExecuteAffrowsAsync();
+
+            Console.WriteLine(r);
+
             await lOL_Client_Operation.GameAsync();
         }
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            await lOL_Client_Operation.ChooseHeroesAsync();
+            await lOL_Client_Operation.DisableHeroesAsync();
         }
     }
 }

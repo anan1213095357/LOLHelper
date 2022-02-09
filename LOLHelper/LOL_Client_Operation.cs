@@ -129,7 +129,7 @@ namespace LOLHelper
                     #region 判断是否处于选择英雄状态
                     //判断是否进入BP成功
                     await Task.Delay(8000);
-                    var ret = await op_Client.LoopFindStrAsync(op_Client_Operation, 249, 1, 743, 93, 1, "表明英雄|选择英雄|禁用英雄", "E9DFCC-202020", 20, false);
+                    var ret = await op_Client.LoopFindStrAsync(op_Client_Operation, 249, 1, 743, 93, 1, "表明英雄", "E9DFCC-202020", 20, false);
                     if (!ret.Result)
                         await LoLAuto.FireAsync(ClientTrigger.BP结束);
                     #endregion
@@ -179,7 +179,7 @@ namespace LOLHelper
                 {
                     Console.WriteLine("开始禁用英雄");
 
-                    var ret = await op_Client.LoopFindStrAsync(op_Client_Operation, 249, 1, 743, 93, 1, "表明英雄|选择英雄|禁用英雄", "E9DFCC-202020", 20, false);
+                    var ret = await op_Client.LoopFindStrAsync(op_Client_Operation, 249, 1, 743, 93, 1, "禁用英雄", "E9DFCC-202020", 20, false);
                     if (!ret.Result)
                         await LoLAuto.FireAsync(ClientTrigger.BP结束);
 
@@ -209,7 +209,7 @@ namespace LOLHelper
                 {
                     Console.WriteLine("选择英雄");
 
-                    var ret = await op_Client.LoopFindStrAsync(op_Client_Operation, 249, 1, 743, 93, 1, "表明英雄|选择英雄|禁用英雄", "E9DFCC-202020", 20, false);
+                    var ret = await op_Client.LoopFindStrAsync(op_Client_Operation, 249, 1, 743, 93, 1, "选择英雄", "E9DFCC-202020", 60, false);
                     if (!ret.Result)
                         await LoLAuto.FireAsync(ClientTrigger.BP结束);
 
@@ -313,7 +313,7 @@ namespace LOLHelper
                 int hwndTow = Form1.Op_Global.FindWindowEx(hwndOne, "CefBrowserWindow", "");
                 int hwndThree = Form1.Op_Global.FindWindowEx(hwndTow, "Chrome_WidgetWin_0", "");
 
-                var hero = heroesOptions.FavoriteList.Where(p => p.Available && p.Position == position).OrderBy(p => p.Order).FirstOrDefault();
+                var hero = heroesOptions.FavoriteList.Where(p => p.Available && p.Position == position).OrderByDescending(p => p.Order).FirstOrDefault();
 
                 Encoding.Unicode.GetChars(Encoding.Unicode.GetBytes(hero.Name))
                      .Select(p => p).ToList()
@@ -340,7 +340,7 @@ namespace LOLHelper
                 int hwndTow = Form1.Op_Global.FindWindowEx(hwndOne, "CefBrowserWindow", "");
                 int hwndThree = Form1.Op_Global.FindWindowEx(hwndTow, "Chrome_WidgetWin_0", "");
 
-                var hero = heroesOptions.FavoriteList.Where(p => p.Available && p.Position == position).OrderBy(p => p.Order).FirstOrDefault();
+                var hero = heroesOptions.FavoriteList.Where(p => p.Available && p.Position == position).OrderByDescending(p => p.Order).FirstOrDefault();
                 if (hero == null)
                 {
                     return false;
@@ -394,7 +394,7 @@ namespace LOLHelper
                 int hwndTow = Form1.Op_Global.FindWindowEx(hwndOne, "CefBrowserWindow", "");
                 int hwndThree = Form1.Op_Global.FindWindowEx(hwndTow, "Chrome_WidgetWin_0", "");
 
-                var hero = heroesOptions.HateList.Where(p => p.Available).OrderBy(p => p.Order).FirstOrDefault();
+                var hero = heroesOptions.HateList.Where(p => p.Available).OrderByDescending(p => p.Order).FirstOrDefault();
                 if (hero == null)
                 {
                     return false;
