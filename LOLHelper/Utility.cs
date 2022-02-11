@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LOLHelper
@@ -23,7 +24,8 @@ namespace LOLHelper
             public int Index { get; set; }
         }
 
-        public static async Task<FindColorResult> LoopFindColorAsync(this IOpInterface op, IOpInterface opAction, int x, int y, int width, int height, string f, string o, int time, bool isClick)
+        public static async Task<FindColorResult> LoopFindColorAsync(this IOpInterface op, IOpInterface opAction,
+            int x, int y, int width, int height, string f, string o, int time, bool isClick, CancellationToken cancellationToken)
         {
             return await Task.Run(async () =>
             {
@@ -31,7 +33,7 @@ namespace LOLHelper
                 object posx, posy;
                 while (op.FindMultiColor(x, y, width, height, f, o, 1, 0, out posx, out posy) != 1)
                 {
-                    if (tempTime++ > time)
+                    if (tempTime++ > time || cancellationToken.IsCancellationRequested)
                     {
                         return new FindColorResult { Result = false };
                     }
@@ -51,7 +53,7 @@ namespace LOLHelper
 
 
         public static async Task<FindStrResult> LoopFindStrAsync(this IOpInterface op, IOpInterface opAction,
-            int x, int y, int width, int height, int dictIndex, string str, string color, int time, bool isClick)
+            int x, int y, int width, int height, int dictIndex, string str, string color, int time, bool isClick, CancellationToken cancellationToken)
         {
             return await Task.Run(async () =>
             {
@@ -62,7 +64,7 @@ namespace LOLHelper
                 while (findIndex == -1)
                 {
                     findIndex = op.FindStr(x, y, width, height, str, color, 0.85, out retx, out rety);
-                    if (tempTime++ > time)
+                    if (tempTime++ > time || cancellationToken.IsCancellationRequested)
                     {
                         return new FindStrResult { Result = false, Index = -1 };
                     }

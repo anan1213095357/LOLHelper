@@ -8,4 +8,4 @@ color-df:FF0000 000000 0
 color-df:000000 000000 0
 color-df:112230 000000 0
 color-df:EAF987 000000 0
-path:C:/Users/A/Desktop/LOLHelper/lol.dict
+path:C:/Users/A/source/repos/LOLHelper/LOLHelper/bin/Debug/lolclientstatus.dict
