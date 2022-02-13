@@ -1,5 +1,6 @@
 ﻿using LOLHelper.Models;
 using opLib;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -55,7 +56,7 @@ namespace LOLHelper
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = Fsql.Select<HerosModel>().ToList();
+            dataGridView1.DataSource = Fsql.Select<HerosBPModel>().ToList();
             #region 插入测试数据
             //await Fsql.Insert(new HerosModel
             //{
@@ -167,5 +168,41 @@ namespace LOLHelper
             await lOL_Client_Operation.GameAsync();
         }
 
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            var client = new RestClient("https://www.op.gg/api/meta/champions?hl=zh_CN");
+            var request = new RestRequest();
+            HeroOPGGModel response = await client.GetAsync<HeroOPGGModel>(request);
+
+            foreach (var item in response.data)
+            {
+
+                try
+                {
+                    var stream = await new RestClient(item.image_url)
+                    .DownloadStreamAsync(new RestRequest { Method = Method.Get });
+
+                    string imgPath = $"{Environment.CurrentDirectory}\\imgs\\{item.name}.png";
+
+                    Image ResourceImage = Image.FromStream(stream);
+                    ResourceImage.Save(imgPath);
+
+
+                    await Fsql.Insert(new HerosModel
+                    {
+                        Name = item.name,
+                        ImagePath = imgPath,
+                        Key = item.key
+                    }).ExecuteIdentityAsync();
+                }
+                catch (Exception EX)
+                {
+
+                    throw;
+                }
+            }
+
+            Console.WriteLine();
+        }
     }
 }

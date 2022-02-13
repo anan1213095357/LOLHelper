@@ -287,7 +287,7 @@ namespace LOLHelper
                 int hwndTow = Form1.Op_Global.FindWindowEx(hwndOne, "CefBrowserWindow", "");
                 int hwndThree = Form1.Op_Global.FindWindowEx(hwndTow, "Chrome_WidgetWin_0", "");
 
-                var hero = await Form1.Fsql.Select<HerosModel>().Where(p => p.Available && p.Position == position).OrderByDescending(p => p.Order).FirstAsync();
+                var hero = await Form1.Fsql.Select<HerosBPModel>().Where(p => p.Available && p.Position == position).OrderByDescending(p => p.Order).FirstAsync();
 
                 Encoding.Unicode.GetChars(Encoding.Unicode.GetBytes(hero.Name))
                      .Select(p => p).ToList()
@@ -315,7 +315,7 @@ namespace LOLHelper
                 int hwndTow = Form1.Op_Global.FindWindowEx(hwndOne, "CefBrowserWindow", "");
                 int hwndThree = Form1.Op_Global.FindWindowEx(hwndTow, "Chrome_WidgetWin_0", "");
 
-                var hero = await Form1.Fsql.Select<HerosModel>().Where(p => p.Available && p.Position == position).OrderByDescending(p => p.Order).FirstAsync();
+                var hero = await Form1.Fsql.Select<HerosBPModel>().Where(p => p.Available && p.Position == position).OrderByDescending(p => p.Order).FirstAsync();
                 if (hero == null)
                 {
                     return false;
@@ -342,13 +342,13 @@ namespace LOLHelper
                 //如果英雄处于被选或者禁用状态
                 if (!ret.Result)
                 {
-                    await Form1.Fsql.Update<HerosModel>().Where(p => p == hero).Set(p => p.Available, false).ExecuteAffrowsAsync();
+                    await Form1.Fsql.Update<HerosBPModel>().Where(p => p == hero).Set(p => p.Available, false).ExecuteAffrowsAsync();
                     Console.WriteLine("英雄已被选择，换下个英雄！");
                     return await ChooseHeroesAsync();
                 }
                 else
                 {
-                    await Form1.Fsql.Update<HerosModel>().Where(p => !p.Available).Set(p => p.Available, true).ExecuteAffrowsAsync();
+                    await Form1.Fsql.Update<HerosBPModel>().Where(p => !p.Available).Set(p => p.Available, true).ExecuteAffrowsAsync();
                     return true;
                 }
             });
@@ -369,7 +369,7 @@ namespace LOLHelper
                 int hwndTow = Form1.Op_Global.FindWindowEx(hwndOne, "CefBrowserWindow", "");
                 int hwndThree = Form1.Op_Global.FindWindowEx(hwndTow, "Chrome_WidgetWin_0", "");
 
-                var hero = await Form1.Fsql.Select<HerosModel>().Where(p => p.Available).OrderBy(p => p.Order).FirstAsync();
+                var hero = await Form1.Fsql.Select<HerosBPModel>().Where(p => p.Available).OrderBy(p => p.Order).FirstAsync();
                 if (hero == null)
                 {
                     return false;
@@ -396,7 +396,7 @@ namespace LOLHelper
                 //如果英雄处于被选或者禁用状态
                 if (!ret.Result)
                 {
-                    await Form1.Fsql.Update<HerosModel>().Where(p => p == hero).Set(p => p.Available, false).ExecuteAffrowsAsync();
+                    await Form1.Fsql.Update<HerosBPModel>().Where(p => p == hero).Set(p => p.Available, false).ExecuteAffrowsAsync();
                     Console.WriteLine("英雄已被选择，换下个英雄！");
                     return await DisableHeroesAsync();
                 }

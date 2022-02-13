@@ -7,17 +7,19 @@ using System.Threading.Tasks;
 
 namespace LOLHelper.Models
 {
-
-    [Table(Name = "HERO")]
-    [Index("uk_Name", "Name", true)]
-    public class HerosModel
+    [Table(Name = "HERO_BP")]
+    [Index("uk_Name_Position", "Name,Position", true)]
+    public class HerosBPModel
     {
         [Column(IsIdentity = true, IsPrimary = true)]
         public int ID { get; set; }
         public string Name { get; set; }
-        public string Key { get; set; }
-        public string ImagePath { get; set; }
-        public string Positions { get; set; }
-
+        public Position Position { get; set; }
+        public int Order { get; set; }
+        public bool Available { get; set; } = true;
     }
+
+    
+
+
 }
