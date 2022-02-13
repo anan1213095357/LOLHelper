@@ -25,7 +25,7 @@ namespace LOLHelper
         }
 
         public static async Task<FindColorResult> LoopFindColorAsync(this IOpInterface op, IOpInterface opAction,
-            int x, int y, int width, int height, string f, string o, int time, bool isClick, CancellationToken cancellationToken)
+            int x, int y, int width, int height, string f, string o, int time, bool isClick, bool opRuning)
         {
             return await Task.Run(async () =>
             {
@@ -33,7 +33,7 @@ namespace LOLHelper
                 object posx, posy;
                 while (op.FindMultiColor(x, y, width, height, f, o, 1, 0, out posx, out posy) != 1)
                 {
-                    if (tempTime++ > time || cancellationToken.IsCancellationRequested)
+                    if (tempTime++ > time || !opRuning)
                     {
                         return new FindColorResult { Result = false };
                     }
@@ -53,7 +53,7 @@ namespace LOLHelper
 
 
         public static async Task<FindStrResult> LoopFindStrAsync(this IOpInterface op, IOpInterface opAction,
-            int x, int y, int width, int height, int dictIndex, string str, string color, int time, bool isClick, CancellationToken cancellationToken)
+            int x, int y, int width, int height, int dictIndex, string str, string color, int time, bool isClick, bool opRuning)
         {
             return await Task.Run(async () =>
             {
@@ -64,7 +64,7 @@ namespace LOLHelper
                 while (findIndex == -1)
                 {
                     findIndex = op.FindStr(x, y, width, height, str, color, 0.85, out retx, out rety);
-                    if (tempTime++ > time || cancellationToken.IsCancellationRequested)
+                    if (tempTime++ > time || !opRuning)
                     {
                         return new FindStrResult { Result = false, Index = -1 };
                     }
@@ -79,6 +79,26 @@ namespace LOLHelper
                 return new FindStrResult { Result = true, Index = findIndex };
             });
 
+
+        }
+
+
+        public static FindStrResult FindStr(this IOpInterface op, IOpInterface opAction,
+            int x, int y, int width, int height, int dictIndex, string str, string color, bool isClick)
+        {
+            op.UseDict(dictIndex);
+            object retx, rety;
+            int findIndex;
+            findIndex = op.FindStr(x, y, width, height, str, color, 0.85, out retx, out rety);
+            if (isClick)
+            {
+                opAction.MoveTo((int)retx, (int)rety);
+                opAction.LeftClick();
+            }
+            if (findIndex >= 0)
+                return new FindStrResult { Result = true, Index = findIndex };
+            else
+                return new FindStrResult { Result = false };
 
         }
 
