@@ -31,15 +31,25 @@
             this.components = new System.ComponentModel.Container();
             this.button1 = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
+            this.选项 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.添加为上单 = new System.Windows.Forms.ToolStripMenuItem();
+            this.添加为打野 = new System.Windows.Forms.ToolStripMenuItem();
+            this.添加为中单 = new System.Windows.Forms.ToolStripMenuItem();
+            this.添加为辅助 = new System.Windows.Forms.ToolStripMenuItem();
+            this.添加为射手 = new System.Windows.Forms.ToolStripMenuItem();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.listView2 = new System.Windows.Forms.ListView();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.BP表格右键菜单 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.删除 = new System.Windows.Forms.ToolStripMenuItem();
+            this.选项.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.BP表格右键菜单.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(14, 11);
+            this.button1.Location = new System.Drawing.Point(12, 454);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(156, 23);
             this.button1.TabIndex = 3;
@@ -49,13 +59,64 @@
             // 
             // listView1
             // 
+            this.listView1.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.listView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.listView1.ContextMenuStrip = this.选项;
+            this.listView1.FullRowSelect = true;
             this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(14, 74);
+            this.listView1.Location = new System.Drawing.Point(17, 39);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(169, 398);
+            this.listView1.Size = new System.Drawing.Size(122, 207);
             this.listView1.TabIndex = 4;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            // 
+            // 选项
+            // 
+            this.选项.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.添加为上单,
+            this.添加为打野,
+            this.添加为中单,
+            this.添加为辅助,
+            this.添加为射手});
+            this.选项.Name = "contextMenuStrip1";
+            this.选项.Size = new System.Drawing.Size(137, 114);
+            this.选项.Text = "选项";
+            // 
+            // 添加为上单
+            // 
+            this.添加为上单.Name = "添加为上单";
+            this.添加为上单.Size = new System.Drawing.Size(136, 22);
+            this.添加为上单.Text = "添加为上单";
+            this.添加为上单.Click += new System.EventHandler(this.添加为上单_Click);
+            // 
+            // 添加为打野
+            // 
+            this.添加为打野.Name = "添加为打野";
+            this.添加为打野.Size = new System.Drawing.Size(180, 22);
+            this.添加为打野.Text = "添加为打野";
+            this.添加为打野.Click += new System.EventHandler(this.添加为打野_Click);
+            // 
+            // 添加为中单
+            // 
+            this.添加为中单.Name = "添加为中单";
+            this.添加为中单.Size = new System.Drawing.Size(180, 22);
+            this.添加为中单.Text = "添加为中单";
+            this.添加为中单.Click += new System.EventHandler(this.添加为中单_Click);
+            // 
+            // 添加为辅助
+            // 
+            this.添加为辅助.Name = "添加为辅助";
+            this.添加为辅助.Size = new System.Drawing.Size(180, 22);
+            this.添加为辅助.Text = "添加为辅助";
+            this.添加为辅助.Click += new System.EventHandler(this.添加为辅助_Click);
+            // 
+            // 添加为射手
+            // 
+            this.添加为射手.Name = "添加为射手";
+            this.添加为射手.Size = new System.Drawing.Size(180, 22);
+            this.添加为射手.Text = "添加为射手";
+            this.添加为射手.Click += new System.EventHandler(this.添加为射手_Click);
             // 
             // imageList1
             // 
@@ -63,43 +124,57 @@
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // listView2
-            // 
-            this.listView2.HideSelection = false;
-            this.listView2.Location = new System.Drawing.Point(189, 74);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(360, 398);
-            this.listView2.TabIndex = 5;
-            this.listView2.UseCompatibleStateImageBehavior = false;
-            this.listView2.View = System.Windows.Forms.View.Details;
-            // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(14, 47);
+            this.textBox1.Location = new System.Drawing.Point(17, 12);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(169, 21);
+            this.textBox1.Size = new System.Drawing.Size(122, 21);
             this.textBox1.TabIndex = 6;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // textBox2
+            // dataGridView1
             // 
-            this.textBox2.Location = new System.Drawing.Point(380, 47);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(169, 21);
-            this.textBox2.TabIndex = 7;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.ContextMenuStrip = this.BP表格右键菜单;
+            this.dataGridView1.Location = new System.Drawing.Point(145, 12);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.RowTemplate.Height = 23;
+            this.dataGridView1.Size = new System.Drawing.Size(428, 234);
+            this.dataGridView1.TabIndex = 9;
+            this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
+            this.dataGridView1.RowStateChanged += new System.Windows.Forms.DataGridViewRowStateChangedEventHandler(this.dataGridView1_RowStateChanged);
+            // 
+            // BP表格右键菜单
+            // 
+            this.BP表格右键菜单.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.删除});
+            this.BP表格右键菜单.Name = "contextMenuStrip1";
+            this.BP表格右键菜单.Size = new System.Drawing.Size(101, 26);
+            this.BP表格右键菜单.Text = "contextMenuStrip1";
+            // 
+            // 删除
+            // 
+            this.删除.Name = "删除";
+            this.删除.Size = new System.Drawing.Size(180, 22);
+            this.删除.Text = "删除";
+            this.删除.Click += new System.EventHandler(this.删除_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 489);
-            this.Controls.Add(this.textBox2);
+            this.ClientSize = new System.Drawing.Size(588, 263);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.listView2);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.button1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "英雄联盟自动BP 换符文";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.选项.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.BP表格右键菜单.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -109,9 +184,16 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.ListView listView2;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.ContextMenuStrip 选项;
+        private System.Windows.Forms.ToolStripMenuItem 添加为上单;
+        private System.Windows.Forms.ToolStripMenuItem 添加为打野;
+        private System.Windows.Forms.ToolStripMenuItem 添加为中单;
+        private System.Windows.Forms.ToolStripMenuItem 添加为辅助;
+        private System.Windows.Forms.ToolStripMenuItem 添加为射手;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.ContextMenuStrip BP表格右键菜单;
+        private System.Windows.Forms.ToolStripMenuItem 删除;
     }
 }
 
