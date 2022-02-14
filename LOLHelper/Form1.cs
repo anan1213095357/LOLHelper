@@ -56,7 +56,32 @@ namespace LOLHelper
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = Fsql.Select<HerosBPModel>().ToList();
+
+            this.listView1.Columns.Add("", 24, HorizontalAlignment.Left);
+            this.listView1.Columns.Add("名称", 120, HorizontalAlignment.Left);
+
+            listView1.SmallImageList = imageList1;
+            listView1.StateImageList = imageList1;
+            listView1.LargeImageList = imageList1;
+            //imageList1.ImageSize = new Size(50,50);
+
+            //this.listView1.BeginUpdate();   //数据更新，UI暂时挂起，直到EndUpdate绘制控件，可以有效避免闪烁并大大提高加载速度  
+            foreach (var item in Fsql.Select<HerosModel>().ToList())
+            {
+                imageList1.Images.Add(item.Key, Image.FromFile($"{Environment.CurrentDirectory}\\imgs\\{item.Name}.png"));
+
+                ListViewItem lvi = new ListViewItem
+                {
+                    ImageKey = item.Key     //通过与imageList绑定，显示imageList中第i项图标  
+                };
+
+
+                lvi.SubItems.Add(item.Name);
+                this.listView1.Items.Add(lvi);
+            }
+
+           // this.listView1.EndUpdate();  //结束数据处理，UI界面一次性绘制。 
+            //dataGridView1.DataSource = Fsql.Select<HerosBPModel>().ToList();
             #region 插入测试数据
             //await Fsql.Insert(new HerosModel
             //{
@@ -179,11 +204,12 @@ namespace LOLHelper
 
                 try
                 {
+                    Console.WriteLine("image_url");
                     var stream = await new RestClient(item.image_url)
                     .DownloadStreamAsync(new RestRequest { Method = Method.Get });
 
                     string imgPath = $"{Environment.CurrentDirectory}\\imgs\\{item.name}.png";
-
+                    Console.WriteLine(imgPath);
                     Image ResourceImage = Image.FromStream(stream);
                     ResourceImage.Save(imgPath);
 
@@ -197,8 +223,6 @@ namespace LOLHelper
                 }
                 catch (Exception EX)
                 {
-
-                    throw;
                 }
             }
 
