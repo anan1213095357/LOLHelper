@@ -22,6 +22,7 @@ namespace LOLHelper
         {
             public bool Result { get; set; }
             public int Index { get; set; }
+            public Point? Pos { get; set; }
         }
 
         public static async Task<FindColorResult> LoopFindColorAsync(this IOpInterface op, IOpInterface opAction,
@@ -76,7 +77,7 @@ namespace LOLHelper
                     opAction.MoveTo((int)retx, (int)rety);
                     opAction.LeftClick();
                 }
-                return new FindStrResult { Result = true, Index = findIndex };
+                return new FindStrResult { Result = true, Index = findIndex ,Pos = new Point((int)retx, (int)rety) };
             });
 
 

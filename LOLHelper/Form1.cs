@@ -1,5 +1,5 @@
 ﻿using LOLHelper.Models;
-using Microsoft.Data.Sqlite;
+using LOLHelper.Properties;
 using opLib;
 using RestSharp;
 using System;
@@ -55,7 +55,7 @@ namespace LOLHelper
                 .UseAutoSyncStructure(true)
                 .Build();
 
-        private void Form1_Load(object sender, EventArgs e)
+        private async void Form1_Load(object sender, EventArgs e)
         {
 
             dataGridView1.DataSource = Fsql.Select<HerosBPModel>().ToList();
@@ -67,7 +67,7 @@ namespace LOLHelper
             dataGridView1.Columns[2].HeaderText = "位置";
             dataGridView1.Columns[3].HeaderText = "排序";
             dataGridView1.Columns[4].HeaderText = "启用";
-            dataGridView1.Columns[4].Width = 68; 
+            dataGridView1.Columns[4].Width = 68;
 
             this.listView1.Columns.Add("", 24, HorizontalAlignment.Left);
             this.listView1.Columns.Add("名称", 120, HorizontalAlignment.Left);
@@ -201,8 +201,16 @@ namespace LOLHelper
             //    Position = Position.辅助,
             //}).ExecuteAffrowsAsync();
 
+            Fsql.Insert(new SkillModel
+            {
+                Hero_ID = 0,
+                Skill_D = SkillEnum.闪现,
+                Skill_F = SkillEnum.引燃
+            }).ExecuteAffrows();
+
+
             #endregion
-            //await lOL_Client_Operation.GameAsync();
+            await lOL_Client_Operation.GameAsync();
         }
 
         private async void button1_Click(object sender, EventArgs e)
@@ -233,7 +241,7 @@ namespace LOLHelper
                         Key = item.key
                     }).ExecuteIdentityAsync();
                 }
-                catch (Exception EX)
+                catch (Exception ex)
                 {
                 }
             }
@@ -429,5 +437,88 @@ namespace LOLHelper
             }
             dataGridView1.DataSource = Fsql.Select<HerosBPModel>().ToList();
         }
+
+        private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
+        {
+
+
+
+
+
+            if (((DataGridView)sender).SelectedCells.Count > 0)
+            {
+                var rowIndex = ((DataGridView)sender).SelectedCells[0].RowIndex;
+
+
+                try
+                {
+
+                    var skills = Fsql.Select<SkillModel>()
+                         .Where(p => p.Hero_ID == Convert.ToInt64(dataGridView1.Rows[rowIndex].Cells[0].FormattedValue))
+                         .Limit(2)
+                         .ToList();
+
+                    if (skills.Count == 0)
+                    {
+                        skills.Add(new SkillModel
+                        {
+                            Skill_D = SkillEnum.闪现,
+                            Skill_F = SkillEnum.引燃
+                        });
+                    }
+
+                    if (skills.Count == 1)
+                    {
+                        skills.Add(new SkillModel
+                        {
+                            Skill_D = SkillEnum.闪现,
+                            Skill_F = SkillEnum.传送
+                        });
+                    }
+
+                    skillShow1.pictureBox1.Image = selectSkillShow(skills[0].Skill_D);
+                    skillShow1.pictureBox2.Image = selectSkillShow(skills[0].Skill_F);
+                    skillShow1.pictureBox3.Image = selectSkillShow(skills[1].Skill_D);
+                    skillShow1.pictureBox4.Image = selectSkillShow(skills[1].Skill_F);
+
+                }
+                catch (Exception)
+                {
+                }
+                Console.WriteLine();
+
+
+            }
+        }
+
+
+        private Bitmap selectSkillShow(SkillEnum skillEnum)
+        {
+            switch (skillEnum)
+            {
+                case SkillEnum.闪现:
+                    return Resources._1;
+                case SkillEnum.引燃:
+                    return Resources._2;
+                case SkillEnum.疾跑:
+                    return Resources._1;
+                case SkillEnum.传送:
+                    return Resources._4;
+                case SkillEnum.治疗:
+                    return Resources._1;
+                case SkillEnum.屏障:
+                    return Resources._1;
+                case SkillEnum.惩戒:
+                    return Resources._1;
+                default:
+                    return Resources._1;
+            }
+        }
+
+
+
+
+
+
     }
 }

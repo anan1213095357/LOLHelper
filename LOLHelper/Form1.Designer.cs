@@ -42,6 +42,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.BP表格右键菜单 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.删除 = new System.Windows.Forms.ToolStripMenuItem();
+            this.skillShow1 = new LOLHelper.SkillShow();
             this.选项.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.BP表格右键菜单.SuspendLayout();
@@ -93,28 +94,28 @@
             // 添加为打野
             // 
             this.添加为打野.Name = "添加为打野";
-            this.添加为打野.Size = new System.Drawing.Size(180, 22);
+            this.添加为打野.Size = new System.Drawing.Size(136, 22);
             this.添加为打野.Text = "添加为打野";
             this.添加为打野.Click += new System.EventHandler(this.添加为打野_Click);
             // 
             // 添加为中单
             // 
             this.添加为中单.Name = "添加为中单";
-            this.添加为中单.Size = new System.Drawing.Size(180, 22);
+            this.添加为中单.Size = new System.Drawing.Size(136, 22);
             this.添加为中单.Text = "添加为中单";
             this.添加为中单.Click += new System.EventHandler(this.添加为中单_Click);
             // 
             // 添加为辅助
             // 
             this.添加为辅助.Name = "添加为辅助";
-            this.添加为辅助.Size = new System.Drawing.Size(180, 22);
+            this.添加为辅助.Size = new System.Drawing.Size(136, 22);
             this.添加为辅助.Text = "添加为辅助";
             this.添加为辅助.Click += new System.EventHandler(this.添加为辅助_Click);
             // 
             // 添加为射手
             // 
             this.添加为射手.Name = "添加为射手";
-            this.添加为射手.Size = new System.Drawing.Size(180, 22);
+            this.添加为射手.Size = new System.Drawing.Size(136, 22);
             this.添加为射手.Text = "添加为射手";
             this.添加为射手.Click += new System.EventHandler(this.添加为射手_Click);
             // 
@@ -144,6 +145,7 @@
             this.dataGridView1.TabIndex = 9;
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             this.dataGridView1.RowStateChanged += new System.Windows.Forms.DataGridViewRowStateChangedEventHandler(this.dataGridView1_RowStateChanged);
+            this.dataGridView1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseClick);
             // 
             // BP表格右键菜单
             // 
@@ -156,15 +158,23 @@
             // 删除
             // 
             this.删除.Name = "删除";
-            this.删除.Size = new System.Drawing.Size(180, 22);
+            this.删除.Size = new System.Drawing.Size(100, 22);
             this.删除.Text = "删除";
             this.删除.Click += new System.EventHandler(this.删除_Click);
+            // 
+            // skillShow1
+            // 
+            this.skillShow1.Location = new System.Drawing.Point(17, 252);
+            this.skillShow1.Name = "skillShow1";
+            this.skillShow1.Size = new System.Drawing.Size(106, 75);
+            this.skillShow1.TabIndex = 10;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(588, 263);
+            this.ClientSize = new System.Drawing.Size(588, 349);
+            this.Controls.Add(this.skillShow1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.listView1);
@@ -194,6 +204,7 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ContextMenuStrip BP表格右键菜单;
         private System.Windows.Forms.ToolStripMenuItem 删除;
+        private SkillShow skillShow1;
     }
 }
 
